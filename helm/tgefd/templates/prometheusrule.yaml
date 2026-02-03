@@ -1,0 +1,14 @@
+{{- if .Values.monitoring.prometheusRule.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ include "tgefd.fullname" . }}
+  labels:
+    {{- include "tgefd.labels" . | nindent 4 }}
+    {{- with .Values.monitoring.prometheusRule.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+
+spec:
+{{- (.Files.Get "alerts/prometheus_alerts.yaml") | nindent 2 }}
+{{- end }}

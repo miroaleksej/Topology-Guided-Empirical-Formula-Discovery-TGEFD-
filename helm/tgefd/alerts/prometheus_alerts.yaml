@@ -1,0 +1,52 @@
+groups:
+  - name: tgefd-alerts
+    rules:
+      - alert: TGEFDErrorRateHigh
+        expr: >
+          sum(rate(tgefd_http_requests_total{status_code=~"5.."}[5m]))
+          /
+          sum(rate(tgefd_http_requests_total[5m]))
+          > 0.05
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "TGEFD error rate is high"
+          description: "5xx error rate > 5% for 10m"
+
+      - alert: TGEFDDiscoverEvaluateP95High
+        expr: >
+          histogram_quantile(
+            0.95,
+            sum(rate(tgefd_http_request_duration_seconds_bucket{path=~"/v1/(discover|evaluate)"}[5m]))
+            by (le)
+          )
+          > 2.0
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "TGEFD discover/evaluate p95 latency high"
+          description: "p95 latency > 2s for 10m"
+
+      - alert: TGEFDRejectionRateHigh
+        expr: >
+          sum(rate(tgefd_decisions_total{decision="rejected"}[10m]))
+          /
+          sum(rate(tgefd_decisions_total[10m]))
+          > 0.8
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "TGEFD rejection rate high"
+          description: "Rejection rate > 80% for 15m"
+
+      - alert: TGEFDJobCacheEmpty
+        expr: tgefd_job_cache_entries == 0
+        for: 30m
+        labels:
+          severity: info
+        annotations:
+          summary: "TGEFD job cache empty"
+          description: "Job cache has zero entries for 30m"

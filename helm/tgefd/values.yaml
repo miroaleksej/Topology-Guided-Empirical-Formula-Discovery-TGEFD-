@@ -1,0 +1,95 @@
+replicaCount: 1
+
+image:
+  repository: tgefd
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  requests:
+    cpu: "250m"
+    memory: "512Mi"
+  limits:
+    cpu: "1"
+    memory: "1Gi"
+
+probes:
+  liveness:
+    path: /healthz
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    timeoutSeconds: 2
+    failureThreshold: 3
+  readiness:
+    path: /readyz
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 2
+    failureThreshold: 3
+
+config:
+  TGEFD_AUTH_MODE: "api_key"
+  TGEFD_MAX_BODY_BYTES: "1048576"
+  TGEFD_RATE_LIMIT_PER_MINUTE: "120"
+  TGEFD_BURST_LIMIT: "30"
+  TGEFD_HEAVY_RATE_LIMIT_PER_MINUTE: "20"
+  TGEFD_HEAVY_BURST_LIMIT: "5"
+  TGEFD_AUDIT_LOG_PATH: "/var/log/tgefd/audit.jsonl"
+  TGEFD_OTEL_SERVICE_NAME: "tgefd"
+
+secret:
+  create: true
+  data:
+    TGEFD_API_KEY: "CHANGE_ME"
+
+externalSecrets:
+  enabled: false
+  secretStoreRef:
+    name: "vault-backend"
+    kind: "ClusterSecretStore"
+  refreshInterval: "1h"
+  data:
+    - secretKey: TGEFD_API_KEY
+      remoteRef:
+        key: "tgefd/api-key"
+
+ingress:
+  enabled: false
+  className: "nginx"
+  annotations:
+    kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: tgefd.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: tgefd-tls
+      hosts:
+        - tgefd.local
+
+monitoring:
+  serviceMonitor:
+    enabled: false
+    interval: 30s
+    scrapeTimeout: 10s
+    labels: {}
+  prometheusRule:
+    enabled: false
+    labels: {}
+  grafanaDashboard:
+    enabled: false
+    labels: {}
+
+podAnnotations: {}
+
+extraEnv: []
+extraEnvFrom: []
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
