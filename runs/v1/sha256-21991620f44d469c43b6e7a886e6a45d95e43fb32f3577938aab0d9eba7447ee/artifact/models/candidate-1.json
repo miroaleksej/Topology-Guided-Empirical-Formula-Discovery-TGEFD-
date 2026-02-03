@@ -1,0 +1,20 @@
+{
+  "family_id": "candidate-1",
+  "representative_model": {
+    "formula": "y = (+0.5)*x + (+0.5)*x^1",
+    "coefficients": {
+      "x": 0.4999999999999998,
+      "x^1": 0.5000000000000001
+    }
+  },
+  "invariant_terms": [],
+  "unstable_terms": [],
+  "error": {
+    "mean": 7.632783294297951e-17,
+    "std": 1.2018516789897274e-17
+  },
+  "coeff_order": [
+    "x",
+    "x^1"
+  ]
+}
