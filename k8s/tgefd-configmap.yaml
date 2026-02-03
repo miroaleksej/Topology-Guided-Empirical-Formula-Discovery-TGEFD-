@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tgefd-config
+  labels:
+    app: tgefd
+    component: api
+
+data:
+  TGEFD_AUTH_MODE: "api_key"
+  TGEFD_MAX_BODY_BYTES: "1048576"
+  TGEFD_RATE_LIMIT_PER_MINUTE: "120"
+  TGEFD_BURST_LIMIT: "30"
+  TGEFD_HEAVY_RATE_LIMIT_PER_MINUTE: "20"
+  TGEFD_HEAVY_BURST_LIMIT: "5"
+  TGEFD_AUDIT_LOG_PATH: "/var/log/tgefd/audit.jsonl"
+  TGEFD_OTEL_SERVICE_NAME: "tgefd"

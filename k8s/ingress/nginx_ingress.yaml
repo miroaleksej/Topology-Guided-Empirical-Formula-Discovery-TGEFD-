@@ -1,0 +1,52 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tgefd
+  labels:
+    app: tgefd
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    # External auth example (oauth2-proxy or your auth service)
+    # nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.oauth2-proxy.svc.cluster.local/oauth2/auth"
+    # nginx.ingress.kubernetes.io/auth-response-headers: "x-auth-request-user,x-auth-request-email,x-auth-request-groups"
+    # Trust boundary: overwrite forwarded headers to block spoofing
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Forwarded-For $remote_addr;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-Forwarded-Host $host;
+      proxy_set_header x-auth-request-user "";
+      proxy_set_header x-auth-request-email "";
+      proxy_set_header x-auth-request-groups "";
+    # Optional: if snippets are disabled, use a ConfigMap via proxy-set-headers instead.
+    # nginx.ingress.kubernetes.io/proxy-set-headers: "default/tgefd-proxy-headers"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - tgefd.example.com
+      secretName: tgefd-tls
+  rules:
+    - host: tgefd.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: tgefd
+                port:
+                  number: 80
+---
+# Optional ConfigMap if you prefer nginx.ingress.kubernetes.io/proxy-set-headers
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: tgefd-proxy-headers
+# data:
+#   X-Forwarded-For: "$remote_addr"
+#   X-Forwarded-Proto: "$scheme"
+#   X-Forwarded-Host: "$host"
+#   x-auth-request-user: ""
+#   x-auth-request-email: ""
+#   x-auth-request-groups: ""

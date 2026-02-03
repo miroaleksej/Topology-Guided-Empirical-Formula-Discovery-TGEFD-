@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tgefd
+  labels:
+    app: tgefd
+    component: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tgefd
+      component: api
+  template:
+    metadata:
+      labels:
+        app: tgefd
+        component: api
+    spec:
+      containers:
+        - name: tgefd
+          image: tgefd:latest
+          imagePullPolicy: IfNotPresent
+          command: ["uvicorn"]
+          args: ["tgefd.server:app", "--host", "0.0.0.0", "--port", "8000"]
+          ports:
+            - containerPort: 8000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: tgefd-config
+            - secretRef:
+                name: tgefd-secrets
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          volumeMounts:
+            - name: audit-logs
+              mountPath: /var/log/tgefd
+      volumes:
+        - name: audit-logs
+          emptyDir: {}

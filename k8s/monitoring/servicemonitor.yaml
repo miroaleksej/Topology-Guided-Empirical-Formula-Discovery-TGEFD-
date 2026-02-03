@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: tgefd
+  labels:
+    app: tgefd
+spec:
+  selector:
+    matchLabels:
+      app: tgefd
+      component: api
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+      scrapeTimeout: 10s
