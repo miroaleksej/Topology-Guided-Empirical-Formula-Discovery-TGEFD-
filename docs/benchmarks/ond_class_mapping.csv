@@ -1,0 +1,5 @@
+Model,OND Class,Expected Profile,Notes
+A: Bounded/Interval,III (Structured full-rank),H_rank ~ max; H_sub/H_branch down,Phase restriction / clustering
+B: Grid/Comb,IV (Finite-state),H_branch down; strong clustering,Finite-state / automaton-like
+C: Linear/Recurrent,II (Low-rank),H_rank down; low-dimensional dynamics,Recurrence / LCG-like
+Reference,I (IID-like),H_* ~ max,null model
