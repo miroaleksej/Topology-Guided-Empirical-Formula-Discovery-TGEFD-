@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OND RNG Bench Config v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bench_version",
+    "id",
+    "protocol",
+    "n_values",
+    "rng_families",
+    "trials",
+    "repeats",
+    "metrics",
+    "output",
+    "reproducibility"
+  ],
+  "properties": {
+    "bench_version": {
+      "type": "string",
+      "enum": ["1.0"]
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": {"type": "string"},
+        "params": {"type": "object"}
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "map": {"type": "string"},
+        "note": {"type": "string"}
+      }
+    },
+    "n_values": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "integer", "minimum": 1}
+    },
+    "rng_families": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+          "required": ["name"],
+          "properties": {
+            "name": {"type": "string"},
+            "label": {"type": "string"},
+            "class_label": {"type": "string"},
+            "params": {"type": "object"}
+          }
+      }
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "fixed_key": {"type": "boolean"},
+        "message_model": {"type": "string"}
+      }
+    },
+    "trials": {"type": "integer", "minimum": 1},
+    "repeats": {"type": "integer", "minimum": 1},
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fpr_target"],
+      "properties": {
+        "fpr_target": {"type": "number", "minimum": 0.0, "maximum": 1.0}
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["base_dir"],
+      "properties": {
+        "base_dir": {"type": "string"},
+        "save_curves": {"type": "boolean"},
+        "save_datasets": {"type": "boolean"},
+        "render_svg": {"type": "boolean"},
+        "svg_out_dir": {"type": "string"},
+        "svg_metric": {"type": "string"}
+      }
+    },
+    "reproducibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seed"],
+      "properties": {
+        "seed": {"type": "integer"},
+        "deterministic": {"type": "boolean"}
+      }
+    }
+  }
+}
