@@ -1,0 +1,45 @@
+bench_version: "1.0"
+id: "ecdsa-drbg-reseed"
+protocol:
+  name: "ecdsa_secp256k1"
+observation:
+  map: "rs"
+  note: "ECDSA signature projection (r,s)"
+
+n_values: [8, 16, 32, 64, 128]
+
+rng_families:
+  - name: chacha20_drbg
+    params:
+      reseed_mode: "periodic"
+      reseed_interval: 8
+  - name: ctr_drbg
+    params:
+      reseed_mode: "burst"
+      reseed_prob: 0.15
+  - name: hmac_drbg
+    params:
+      reseed_mode: "periodic,burst"
+      reseed_interval: 16
+      reseed_prob: 0.05
+
+usage:
+  fixed_key: true
+  message_model: "counter"
+
+trials: 16
+repeats: 2
+
+metrics:
+  fpr_target: 0.05
+
+output:
+  base_dir: "benchmarks/runs"
+  save_curves: true
+  save_datasets: false
+  render_svg: true
+  svg_out_dir: "docs/benchmarks"
+
+reproducibility:
+  seed: 13
+  deterministic: true

@@ -1,0 +1,8 @@
+version: "1.0"
+items:
+  - name: ecdsa_secp256k1
+    description: "ECDSA over secp256k1"
+    observation: "(r, s) projection"
+  - name: dilithium2
+    description: "Dilithium2 PQ signature"
+    observation: "lattice/vector projection"

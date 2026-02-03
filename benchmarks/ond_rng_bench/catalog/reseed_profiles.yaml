@@ -1,0 +1,56 @@
+version: "1.0"
+items:
+  - name: periodic_short
+    reseed_mode: "periodic"
+    reseed_interval: 8
+    reseed_prob: 0.0
+    expected_class: IV
+    notes: "Short periodic reseed; finite-state artifacts"
+  - name: periodic_long
+    reseed_mode: "periodic"
+    reseed_interval: 64
+    reseed_prob: 0.0
+    expected_class: I
+    notes: "Long periodic reseed; near-reference"
+  - name: burst_low
+    reseed_mode: "burst"
+    reseed_interval: 0
+    reseed_prob: 0.05
+    expected_class: IV
+    notes: "Occasional burst reseeds; regime switching"
+  - name: burst_high
+    reseed_mode: "burst"
+    reseed_interval: 0
+    reseed_prob: 0.25
+    expected_class: IV
+    notes: "Frequent burst reseeds; regime switching"
+  - name: periodic_and_burst
+    reseed_mode: "periodic,burst"
+    reseed_interval: 16
+    reseed_prob: 0.1
+    expected_class: IV
+    notes: "Hybrid reseed schedule"
+  - name: low_entropy_pool
+    reseed_mode: "periodic"
+    reseed_interval: 32
+    reseed_prob: 0.0
+    expected_class: III
+    notes: "Reduced entropy pool; use bounded/interval RNG to model"
+  - name: biased_pool
+    reseed_mode: "periodic"
+    reseed_interval: 32
+    reseed_prob: 0.0
+    expected_class: III
+    notes: "Biased pool; model via masked bits in bounded/interval RNG"
+  - name: stalled_pool
+    reseed_mode: "none"
+    reseed_interval: 0
+    reseed_prob: 0.0
+    expected_class: II
+    notes: "Frozen pool / no reseed"
+  - name: stalled
+    reseed_mode: "none"
+    reseed_interval: 0
+    reseed_prob: 0.0
+    expected_class: II
+    notes: "No reseed; potential low-rank drift"
