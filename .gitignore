@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtualenv
+.venv/
+venv/
+ENV/
+
+# Coverage
+.coverage
+coverage.xml
+htmlcov/
+
+# OS
+.DS_Store
+
+# Bench/Run outputs
+runs/
+benchmarks/runs/
+benchmarks/nightly/
+
+# Local prod overrides
+helm/tgefd/values-prod.yaml
+
+# Logs
+*.log

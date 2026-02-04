@@ -1,0 +1,61 @@
+bench_version: "1.0"
+id: "ecdsa-extended"
+protocol:
+  name: "ecdsa_secp256k1"
+observation:
+  map: "rs"
+  note: "ECDSA signature projection (r,s)"
+
+n_values: [8, 16, 32, 64, 128]
+
+rng_families:
+  - name: reference
+    label: reference
+  - name: bounded_interval
+    label: bounded:b8
+    params: {bound_bits: 8}
+  - name: bounded_interval
+    label: bounded:b12
+    params: {bound_bits: 12}
+  - name: grid_comb
+    label: grid:s8
+    params: {step_bits: 8}
+  - name: grid_comb
+    label: grid:s12
+    params: {step_bits: 12}
+  - name: recurrent_low_rank
+    label: recur:n4
+    params: {noise_bits: 4}
+  - name: recurrent_low_rank
+    label: recur:n8
+    params: {noise_bits: 8}
+  - name: chacha20_drbg
+    label: chacha:periodic
+    params: {reseed_mode: "periodic", reseed_interval: 8}
+  - name: ctr_drbg
+    label: ctr:burst
+    params: {reseed_mode: "burst", reseed_prob: 0.1}
+  - name: hmac_drbg
+    label: hmac:periodic+burst
+    params: {reseed_mode: "periodic,burst", reseed_interval: 16, reseed_prob: 0.05}
+
+usage:
+  fixed_key: true
+  message_model: "counter"
+
+trials: 16
+repeats: 2
+
+metrics:
+  fpr_target: 0.05
+
+output:
+  base_dir: "benchmarks/runs"
+  save_curves: true
+  save_datasets: false
+  render_svg: true
+  svg_out_dir: "docs/benchmarks"
+
+reproducibility:
+  seed: 17
+  deterministic: true

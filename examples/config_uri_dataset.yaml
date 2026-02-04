@@ -1,0 +1,92 @@
+tgefd_config_version: "1.0"
+
+run:
+  mode: "discover"
+  seed: 7
+  deterministic: true
+
+dataset:
+  source: "uri"
+  uri: "file://./examples/data/sample_measurements.csv"
+  metadata:
+    description: "sample measurements"
+
+hypothesis_space:
+  features:
+    - name: "const"
+      expression: "1"
+    - name: "x"
+      expression: "x"
+    - name: "x_pow"
+      expression: "x^p"
+      parameters: ["p"]
+  parameters:
+    p:
+      type: "float"
+      values: [1.0, 2.0, 3.0]
+  regularization:
+    lambda: [0.001, 0.01]
+  adaptive:
+    enabled: true
+    refine_factor: 2.0
+    top_k: 5
+    min_component_size: 2
+
+topology:
+  persistent_homology:
+    max_dim: 1
+    metric: "euclidean"
+  persistence_image:
+    birth_range: [0.0, 1.0]
+    pers_range: [0.0, 1.0]
+    pixel_size: 0.05
+    weight:
+      type: "persistence"
+      params: {n: 2.0}
+    kernel:
+      type: "gaussian"
+      params: {sigma: [[0.05, 0.0], [0.0, 0.05]]}
+  stability_threshold: 0.2
+  h1_threshold: 0.1
+  min_component_size: 2
+  point_scale: "none"
+
+noise:
+  enabled: true
+  type: "gaussian"
+  levels: [0.0, 0.01]
+  trials_per_level: 2
+
+evaluation:
+  acceptance:
+    min_stable_components: 1
+    require_h1: true
+    coeff_tol: 1e-6
+  stability_score:
+    method: "pi_energy"
+    aggregation: "mean"
+    tolerance: 0.15
+    min_pi_energy: 0.0001
+  rejection_reasons: ["no_stable_components", "topological_instability"]
+
+output:
+  verbosity: "summary"
+  save_artifacts: true
+  formats: ["json"]
+  paths:
+    base_dir: "./runs"
+
+reproducibility:
+  tgefd_version: "1.0.0"
+  library_versions: true
+  hash_algorithm: "sha256"
+
+compute_budget:
+  max_hypotheses: 20000
+  max_noise_trials: 16
+  max_total_runs: 128
+  max_model_evals: 500000
+  symbolic_regression_timeout_sec: 10.0
+  ph_timeout_sec: 10.0
+  max_request_wall_time_sec: 60.0
+  max_point_cloud_points: 2000

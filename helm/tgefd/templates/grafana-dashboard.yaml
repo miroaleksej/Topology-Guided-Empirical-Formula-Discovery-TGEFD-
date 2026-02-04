@@ -1,0 +1,17 @@
+{{- if .Values.monitoring.grafanaDashboard.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "tgefd.fullname" . }}-grafana-dashboard
+  labels:
+    {{- include "tgefd.labels" . | nindent 4 }}
+    {{- with .Values.monitoring.grafanaDashboard.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    grafana_dashboard: "1"
+
+data:
+  tgefd_overview.json: |
+{{- (.Files.Get "dashboards/tgefd_overview.json") | nindent 4 }}
+{{- end }}

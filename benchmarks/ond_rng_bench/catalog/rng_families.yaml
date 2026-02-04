@@ -1,0 +1,72 @@
+version: "1.0"
+items:
+  - name: reference
+    class_label: I
+    description: "OS CSPRNG / reference DRBG baseline"
+  - name: bounded_interval
+    class_label: III
+    description: "bounded/interval RNG (phase restriction)"
+    params:
+      bound_bits: 8
+  - name: grid_comb
+    class_label: IV
+    description: "grid/comb RNG (finite-state / low branching)"
+    params:
+      step_bits: 8
+  - name: recurrent_low_rank
+    class_label: II
+    description: "linear/recurrent RNG (low-rank dynamics)"
+    params:
+      noise_bits: 4
+  - name: chacha20_drbg
+    class_label: I
+    description: "ChaCha20-DRBG baseline (cryptography)"
+  - name: ctr_drbg
+    class_label: I
+    description: "CTR-DRBG (AES-256) baseline (cryptography)"
+  - name: hmac_drbg
+    class_label: I
+    description: "HMAC-DRBG baseline"
+  - name: chacha20_drbg
+    label: "chacha20_drbg_periodic_short"
+    class_label: IV
+    description: "ChaCha20-DRBG periodic reseed (short period)"
+    params:
+      reseed_mode: "periodic"
+      reseed_interval: 8
+  - name: chacha20_drbg
+    label: "chacha20_drbg_burst"
+    class_label: IV
+    description: "ChaCha20-DRBG burst reseed"
+    params:
+      reseed_mode: "burst"
+      reseed_prob: 0.15
+  - name: ctr_drbg
+    label: "ctr_drbg_periodic_short"
+    class_label: IV
+    description: "CTR-DRBG periodic reseed (short period)"
+    params:
+      reseed_mode: "periodic"
+      reseed_interval: 8
+  - name: hmac_drbg
+    label: "hmac_drbg_burst"
+    class_label: IV
+    description: "HMAC-DRBG burst reseed"
+    params:
+      reseed_mode: "burst"
+      reseed_prob: 0.15
+  - name: reseed_periodic
+    class_label: IV
+    description: "periodic reseed (short period)"
+  - name: reseed_low_entropy_pool
+    class_label: III
+    description: "low entropy pool / reduced mixing"
+  - name: reseed_biased_pool
+    class_label: III
+    description: "biased entropy pool (MSB/LSB skew)"
+  - name: reseed_stalled
+    class_label: II
+    description: "stalled reseed (frozen pool)"
+  - name: reseed_burst
+    class_label: IV
+    description: "burst reseed / regime switching"

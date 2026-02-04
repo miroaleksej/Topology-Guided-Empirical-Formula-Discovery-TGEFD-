@@ -1,0 +1,943 @@
+{
+  "$defs": {
+    "AcceptanceConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "coeff_tol": {
+          "default": 1e-06,
+          "exclusiveMinimum": 0.0,
+          "title": "Coeff Tol",
+          "type": "number"
+        },
+        "min_stable_components": {
+          "minimum": 0,
+          "title": "Min Stable Components",
+          "type": "integer"
+        },
+        "require_h1": {
+          "title": "Require H1",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "min_stable_components",
+        "require_h1"
+      ],
+      "title": "AcceptanceConfig",
+      "type": "object"
+    },
+    "AdaptiveConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "default": true,
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "h0_threshold": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "H0 Threshold"
+        },
+        "min_component_size": {
+          "default": 2,
+          "minimum": 1,
+          "title": "Min Component Size",
+          "type": "integer"
+        },
+        "refine_factor": {
+          "default": 2.0,
+          "exclusiveMinimum": 1.0,
+          "title": "Refine Factor",
+          "type": "number"
+        },
+        "top_k": {
+          "default": 5,
+          "minimum": 1,
+          "title": "Top K",
+          "type": "integer"
+        }
+      },
+      "title": "AdaptiveConfig",
+      "type": "object"
+    },
+    "ArtifactStoreConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "backend": {
+          "default": "local",
+          "enum": [
+            "local",
+            "s3",
+            "gcs"
+          ],
+          "title": "Backend",
+          "type": "string"
+        },
+        "base_dir": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Base Dir"
+        },
+        "bucket": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Bucket"
+        },
+        "endpoint_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Endpoint Url"
+        },
+        "prefix": {
+          "default": "tgefd/runs",
+          "title": "Prefix",
+          "type": "string"
+        },
+        "region": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Region"
+        },
+        "retry_backoff_sec": {
+          "default": 0.2,
+          "minimum": 0.0,
+          "title": "Retry Backoff Sec",
+          "type": "number"
+        },
+        "retry_max_attempts": {
+          "default": 3,
+          "minimum": 1,
+          "title": "Retry Max Attempts",
+          "type": "integer"
+        },
+        "retry_max_backoff_sec": {
+          "default": 2.0,
+          "minimum": 0.0,
+          "title": "Retry Max Backoff Sec",
+          "type": "number"
+        },
+        "upload_timeout_sec": {
+          "default": 30.0,
+          "exclusiveMinimum": 0.0,
+          "title": "Upload Timeout Sec",
+          "type": "number"
+        }
+      },
+      "title": "ArtifactStoreConfig",
+      "type": "object"
+    },
+    "ComputeBudgetConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "max_hypotheses": {
+          "default": 50000,
+          "minimum": 1,
+          "title": "Max Hypotheses",
+          "type": "integer"
+        },
+        "max_model_evals": {
+          "default": 2000000,
+          "minimum": 1,
+          "title": "Max Model Evals",
+          "type": "integer"
+        },
+        "max_noise_trials": {
+          "default": 32,
+          "minimum": 1,
+          "title": "Max Noise Trials",
+          "type": "integer"
+        },
+        "max_point_cloud_points": {
+          "default": 5000,
+          "minimum": 1,
+          "title": "Max Point Cloud Points",
+          "type": "integer"
+        },
+        "max_request_wall_time_sec": {
+          "default": 60.0,
+          "exclusiveMinimum": 0.0,
+          "title": "Max Request Wall Time Sec",
+          "type": "number"
+        },
+        "max_total_runs": {
+          "default": 256,
+          "minimum": 1,
+          "title": "Max Total Runs",
+          "type": "integer"
+        },
+        "ph_timeout_sec": {
+          "default": 10.0,
+          "exclusiveMinimum": 0.0,
+          "title": "Ph Timeout Sec",
+          "type": "number"
+        },
+        "symbolic_regression_timeout_sec": {
+          "default": 10.0,
+          "exclusiveMinimum": 0.0,
+          "title": "Symbolic Regression Timeout Sec",
+          "type": "number"
+        }
+      },
+      "title": "ComputeBudgetConfig",
+      "type": "object"
+    },
+    "DatasetConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Id"
+        },
+        "limits": {
+          "$ref": "#/$defs/DatasetLimitsConfig"
+        },
+        "metadata": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Metadata"
+        },
+        "path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "source": {
+          "enum": [
+            "inline",
+            "file",
+            "uri"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "uri": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Uri"
+        },
+        "x": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DatasetX"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "y": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DatasetY"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "source"
+      ],
+      "title": "DatasetConfig",
+      "type": "object"
+    },
+    "DatasetLimitsConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "max_features": {
+          "default": 256,
+          "minimum": 1,
+          "title": "Max Features",
+          "type": "integer"
+        },
+        "max_metadata_entries": {
+          "default": 64,
+          "minimum": 0,
+          "title": "Max Metadata Entries",
+          "type": "integer"
+        },
+        "max_metadata_value_chars": {
+          "default": 2048,
+          "minimum": 1,
+          "title": "Max Metadata Value Chars",
+          "type": "integer"
+        },
+        "max_points": {
+          "default": 50000,
+          "minimum": 1,
+          "title": "Max Points",
+          "type": "integer"
+        },
+        "max_total_values": {
+          "default": 5000000,
+          "minimum": 1,
+          "title": "Max Total Values",
+          "type": "integer"
+        }
+      },
+      "title": "DatasetLimitsConfig",
+      "type": "object"
+    },
+    "DatasetX": {
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "enum": [
+            "array",
+            "table"
+          ],
+          "title": "Format",
+          "type": "string"
+        },
+        "values": {
+          "items": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "title": "Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "format",
+        "values"
+      ],
+      "title": "DatasetX",
+      "type": "object"
+    },
+    "DatasetY": {
+      "additionalProperties": false,
+      "properties": {
+        "values": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "values"
+      ],
+      "title": "DatasetY",
+      "type": "object"
+    },
+    "EvaluationConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "acceptance": {
+          "$ref": "#/$defs/AcceptanceConfig"
+        },
+        "rejection_reasons": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Rejection Reasons",
+          "type": "array"
+        },
+        "stability_score": {
+          "$ref": "#/$defs/StabilityScoreConfig"
+        }
+      },
+      "required": [
+        "acceptance",
+        "stability_score",
+        "rejection_reasons"
+      ],
+      "title": "EvaluationConfig",
+      "type": "object"
+    },
+    "FeatureSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "expression": {
+          "title": "Expression",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "parameters": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parameters"
+        }
+      },
+      "required": [
+        "name",
+        "expression"
+      ],
+      "title": "FeatureSpec",
+      "type": "object"
+    },
+    "HypothesisSpaceConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "adaptive": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AdaptiveConfig"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "features": {
+          "items": {
+            "$ref": "#/$defs/FeatureSpec"
+          },
+          "title": "Features",
+          "type": "array"
+        },
+        "parameters": {
+          "additionalProperties": {
+            "$ref": "#/$defs/ParameterSpec"
+          },
+          "title": "Parameters",
+          "type": "object"
+        },
+        "regularization": {
+          "$ref": "#/$defs/RegularizationSpec"
+        }
+      },
+      "required": [
+        "features",
+        "parameters",
+        "regularization"
+      ],
+      "title": "HypothesisSpaceConfig",
+      "type": "object"
+    },
+    "NoiseConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "levels": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Levels",
+          "type": "array"
+        },
+        "trials_per_level": {
+          "minimum": 1,
+          "title": "Trials Per Level",
+          "type": "integer"
+        },
+        "type": {
+          "const": "gaussian",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "enabled",
+        "type",
+        "levels",
+        "trials_per_level"
+      ],
+      "title": "NoiseConfig",
+      "type": "object"
+    },
+    "OutputConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "formats": {
+          "items": {
+            "enum": [
+              "json",
+              "yaml"
+            ],
+            "type": "string"
+          },
+          "title": "Formats",
+          "type": "array"
+        },
+        "paths": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Paths",
+          "type": "object"
+        },
+        "save_artifacts": {
+          "title": "Save Artifacts",
+          "type": "boolean"
+        },
+        "store": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ArtifactStoreConfig"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "verbosity": {
+          "enum": [
+            "minimal",
+            "summary",
+            "full"
+          ],
+          "title": "Verbosity",
+          "type": "string"
+        }
+      },
+      "required": [
+        "verbosity",
+        "save_artifacts",
+        "formats",
+        "paths"
+      ],
+      "title": "OutputConfig",
+      "type": "object"
+    },
+    "PIKernel": {
+      "additionalProperties": false,
+      "properties": {
+        "params": {
+          "additionalProperties": true,
+          "title": "Params",
+          "type": "object"
+        },
+        "type": {
+          "enum": [
+            "gaussian",
+            "uniform"
+          ],
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "params"
+      ],
+      "title": "PIKernel",
+      "type": "object"
+    },
+    "PIWeight": {
+      "additionalProperties": false,
+      "properties": {
+        "params": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Params",
+          "type": "object"
+        },
+        "type": {
+          "const": "persistence",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "params"
+      ],
+      "title": "PIWeight",
+      "type": "object"
+    },
+    "ParameterSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "float",
+            "int"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "values": {
+          "items": {
+            "type": "number"
+          },
+          "minItems": 1,
+          "title": "Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "type",
+        "values"
+      ],
+      "title": "ParameterSpec",
+      "type": "object"
+    },
+    "PersistenceImageConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "birth_range": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Birth Range",
+          "type": "array"
+        },
+        "kernel": {
+          "$ref": "#/$defs/PIKernel"
+        },
+        "pers_range": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Pers Range",
+          "type": "array"
+        },
+        "pixel_size": {
+          "title": "Pixel Size",
+          "type": "number"
+        },
+        "weight": {
+          "$ref": "#/$defs/PIWeight"
+        }
+      },
+      "required": [
+        "birth_range",
+        "pers_range",
+        "pixel_size",
+        "weight",
+        "kernel"
+      ],
+      "title": "PersistenceImageConfig",
+      "type": "object"
+    },
+    "PersistentHomologyConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "max_dim": {
+          "minimum": 0,
+          "title": "Max Dim",
+          "type": "integer"
+        },
+        "metric": {
+          "const": "euclidean",
+          "title": "Metric",
+          "type": "string"
+        }
+      },
+      "required": [
+        "max_dim",
+        "metric"
+      ],
+      "title": "PersistentHomologyConfig",
+      "type": "object"
+    },
+    "RegularizationSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "lambda": {
+          "items": {
+            "type": "number"
+          },
+          "minItems": 1,
+          "title": "Lambda",
+          "type": "array"
+        }
+      },
+      "required": [
+        "lambda"
+      ],
+      "title": "RegularizationSpec",
+      "type": "object"
+    },
+    "ReproducibilityConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "hash_algorithm": {
+          "const": "sha256",
+          "title": "Hash Algorithm",
+          "type": "string"
+        },
+        "library_versions": {
+          "title": "Library Versions",
+          "type": "boolean"
+        },
+        "tgefd_version": {
+          "title": "Tgefd Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "tgefd_version",
+        "library_versions",
+        "hash_algorithm"
+      ],
+      "title": "ReproducibilityConfig",
+      "type": "object"
+    },
+    "RunConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "deterministic": {
+          "default": true,
+          "title": "Deterministic",
+          "type": "boolean"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Id"
+        },
+        "mode": {
+          "enum": [
+            "discover",
+            "evaluate",
+            "validate"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "seed": {
+          "title": "Seed",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "mode",
+        "seed"
+      ],
+      "title": "RunConfig",
+      "type": "object"
+    },
+    "StabilityScoreConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregation": {
+          "enum": [
+            "mean",
+            "median"
+          ],
+          "title": "Aggregation",
+          "type": "string"
+        },
+        "method": {
+          "const": "pi_energy",
+          "title": "Method",
+          "type": "string"
+        },
+        "min_pi_energy": {
+          "default": 0.0,
+          "minimum": 0.0,
+          "title": "Min Pi Energy",
+          "type": "number"
+        },
+        "tolerance": {
+          "exclusiveMinimum": 0.0,
+          "title": "Tolerance",
+          "type": "number"
+        }
+      },
+      "required": [
+        "method",
+        "aggregation",
+        "tolerance"
+      ],
+      "title": "StabilityScoreConfig",
+      "type": "object"
+    },
+    "TopologyConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "h1_threshold": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "H1 Threshold"
+        },
+        "min_component_size": {
+          "default": 5,
+          "minimum": 1,
+          "title": "Min Component Size",
+          "type": "integer"
+        },
+        "persistence_image": {
+          "$ref": "#/$defs/PersistenceImageConfig"
+        },
+        "persistent_homology": {
+          "$ref": "#/$defs/PersistentHomologyConfig"
+        },
+        "point_scale": {
+          "default": "none",
+          "enum": [
+            "none",
+            "standard"
+          ],
+          "title": "Point Scale",
+          "type": "string"
+        },
+        "stability_threshold": {
+          "exclusiveMinimum": 0.0,
+          "title": "Stability Threshold",
+          "type": "number"
+        }
+      },
+      "required": [
+        "persistent_homology",
+        "persistence_image",
+        "stability_threshold"
+      ],
+      "title": "TopologyConfig",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "compute_budget": {
+      "$ref": "#/$defs/ComputeBudgetConfig"
+    },
+    "dataset": {
+      "$ref": "#/$defs/DatasetConfig"
+    },
+    "evaluation": {
+      "$ref": "#/$defs/EvaluationConfig"
+    },
+    "hypothesis_space": {
+      "$ref": "#/$defs/HypothesisSpaceConfig"
+    },
+    "noise": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/NoiseConfig"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "output": {
+      "$ref": "#/$defs/OutputConfig"
+    },
+    "reproducibility": {
+      "$ref": "#/$defs/ReproducibilityConfig"
+    },
+    "run": {
+      "$ref": "#/$defs/RunConfig"
+    },
+    "tgefd_config_version": {
+      "const": "1.0",
+      "title": "Tgefd Config Version",
+      "type": "string"
+    },
+    "topology": {
+      "$ref": "#/$defs/TopologyConfig"
+    }
+  },
+  "required": [
+    "tgefd_config_version",
+    "run",
+    "dataset",
+    "hypothesis_space",
+    "topology",
+    "noise",
+    "evaluation",
+    "output",
+    "reproducibility"
+  ],
+  "title": "TGEFDConfig",
+  "type": "object"
+}

@@ -1,0 +1,66 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='900' height='520' viewBox='0 0 900 520'>
+<rect width='100%' height='100%' fill='white'/>
+<text x='450.0' y='35.0' text-anchor='middle' font-size='20' font-family='Arial'>Detection quality vs N</text>
+<line x1='70' y1='450' x2='850' y2='450' stroke='#222' stroke-width='1' />
+<line x1='70' y1='70' x2='70' y2='450' stroke='#222' stroke-width='1' />
+<line x1='70.0' y1='450' x2='70.0' y2='456' stroke='#222' stroke-width='1' />
+<text x='70.0' y='474' text-anchor='middle' font-size='12' font-family='Arial'>8</text>
+<line x1='265.0' y1='450' x2='265.0' y2='456' stroke='#222' stroke-width='1' />
+<text x='265.0' y='474' text-anchor='middle' font-size='12' font-family='Arial'>16</text>
+<line x1='460.0' y1='450' x2='460.0' y2='456' stroke='#222' stroke-width='1' />
+<text x='460.0' y='474' text-anchor='middle' font-size='12' font-family='Arial'>32</text>
+<line x1='655.0' y1='450' x2='655.0' y2='456' stroke='#222' stroke-width='1' />
+<text x='655.0' y='474' text-anchor='middle' font-size='12' font-family='Arial'>64</text>
+<line x1='850.0' y1='450' x2='850.0' y2='456' stroke='#222' stroke-width='1' />
+<text x='850.0' y='474' text-anchor='middle' font-size='12' font-family='Arial'>128</text>
+<line x1='64' y1='450.0' x2='70' y2='450.0' stroke='#222' stroke-width='1' />
+<text x='58' y='454.0' text-anchor='end' font-size='12' font-family='Arial'>0.00</text>
+<line x1='70' y1='450.0' x2='850' y2='450.0' stroke='#eee' stroke-width='1' />
+<line x1='64' y1='355.0' x2='70' y2='355.0' stroke='#222' stroke-width='1' />
+<text x='58' y='359.0' text-anchor='end' font-size='12' font-family='Arial'>0.25</text>
+<line x1='70' y1='355.0' x2='850' y2='355.0' stroke='#eee' stroke-width='1' />
+<line x1='64' y1='260.0' x2='70' y2='260.0' stroke='#222' stroke-width='1' />
+<text x='58' y='264.0' text-anchor='end' font-size='12' font-family='Arial'>0.50</text>
+<line x1='70' y1='260.0' x2='850' y2='260.0' stroke='#eee' stroke-width='1' />
+<line x1='64' y1='165.0' x2='70' y2='165.0' stroke='#222' stroke-width='1' />
+<text x='58' y='169.0' text-anchor='end' font-size='12' font-family='Arial'>0.75</text>
+<line x1='70' y1='165.0' x2='850' y2='165.0' stroke='#eee' stroke-width='1' />
+<line x1='64' y1='70.0' x2='70' y2='70.0' stroke='#222' stroke-width='1' />
+<text x='58' y='74.0' text-anchor='end' font-size='12' font-family='Arial'>1.00</text>
+<line x1='70' y1='70.0' x2='850' y2='70.0' stroke='#eee' stroke-width='1' />
+<text x='450.0' y='502' text-anchor='middle' font-size='13' font-family='Arial'>N (log2 scale)</text>
+<text x='18' y='260.0' text-anchor='middle' font-size='13' font-family='Arial' transform='rotate(-90 18 260.0)'>AUC</text>
+<polyline fill='none' stroke='#1f77b4' stroke-width='2' points='70.0,220.4 265.0,180.8 460.0,170.4 655.0,267.9 850.0,191.6' />
+<circle cx='70.0' cy='220.4' r='3' fill='#1f77b4' />
+<circle cx='265.0' cy='180.8' r='3' fill='#1f77b4' />
+<circle cx='460.0' cy='170.4' r='3' fill='#1f77b4' />
+<circle cx='655.0' cy='267.9' r='3' fill='#1f77b4' />
+<circle cx='850.0' cy='191.6' r='3' fill='#1f77b4' />
+<polyline fill='none' stroke='#ff7f0e' stroke-width='2' points='70.0,308.6 265.0,229.6 460.0,298.0 655.0,283.8 850.0,362.9' />
+<circle cx='70.0' cy='308.6' r='3' fill='#ff7f0e' />
+<circle cx='265.0' cy='229.6' r='3' fill='#ff7f0e' />
+<circle cx='460.0' cy='298.0' r='3' fill='#ff7f0e' />
+<circle cx='655.0' cy='283.8' r='3' fill='#ff7f0e' />
+<circle cx='850.0' cy='362.9' r='3' fill='#ff7f0e' />
+<polyline fill='none' stroke='#2ca02c' stroke-width='2' points='70.0,260.0 265.0,223.9 460.0,270.8 655.0,295.8 850.0,242.6' />
+<circle cx='70.0' cy='260.0' r='3' fill='#2ca02c' />
+<circle cx='265.0' cy='223.9' r='3' fill='#2ca02c' />
+<circle cx='460.0' cy='270.8' r='3' fill='#2ca02c' />
+<circle cx='655.0' cy='295.8' r='3' fill='#2ca02c' />
+<circle cx='850.0' cy='242.6' r='3' fill='#2ca02c' />
+<polyline fill='none' stroke='#d62728' stroke-width='2' points='70.0,269.8 265.0,196.7 460.0,294.8 655.0,275.8 850.0,192.1' />
+<circle cx='70.0' cy='269.8' r='3' fill='#d62728' />
+<circle cx='265.0' cy='196.7' r='3' fill='#d62728' />
+<circle cx='460.0' cy='294.8' r='3' fill='#d62728' />
+<circle cx='655.0' cy='275.8' r='3' fill='#d62728' />
+<circle cx='850.0' cy='192.1' r='3' fill='#d62728' />
+<rect x='650' y='80' width='190' height='100' fill='white' stroke='#ccc' />
+<line x1='660' y1='94' x2='680' y2='94' stroke='#1f77b4' stroke-width='2' />
+<text x='686' y='98' font-size='12' font-family='Arial'>reference</text>
+<line x1='660' y1='114' x2='680' y2='114' stroke='#ff7f0e' stroke-width='2' />
+<text x='686' y='118' font-size='12' font-family='Arial'>chacha20_drbg</text>
+<line x1='660' y1='134' x2='680' y2='134' stroke='#2ca02c' stroke-width='2' />
+<text x='686' y='138' font-size='12' font-family='Arial'>ctr_drbg</text>
+<line x1='660' y1='154' x2='680' y2='154' stroke='#d62728' stroke-width='2' />
+<text x='686' y='158' font-size='12' font-family='Arial'>hmac_drbg</text>
+</svg>

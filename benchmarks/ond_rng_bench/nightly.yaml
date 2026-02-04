@@ -1,0 +1,20 @@
+version: "1.0"
+output_dir: benchmarks/nightly
+skip_if_exists: true
+runs:
+  - config: benchmarks/ond_rng_bench/configs/ecdsa_baseline.yaml
+    baseline: benchmarks/ond_rng_bench/baselines/ecdsa_baseline.json
+    metric: AUC
+    max_drop: 0.05
+  - config: benchmarks/ond_rng_bench/configs/dilithium2_baseline.yaml
+    baseline: benchmarks/ond_rng_bench/baselines/dilithium2_baseline.json
+    metric: AUC
+    max_drop: 0.05
+  - config: benchmarks/ond_rng_bench/configs/ecdsa_extended.yaml
+    baseline: benchmarks/ond_rng_bench/baselines/ecdsa_extended.json
+    metric: AUC
+    max_drop: 0.05
+  - config: benchmarks/ond_rng_bench/configs/dilithium2_extended.yaml
+    baseline: benchmarks/ond_rng_bench/baselines/dilithium2_extended.json
+    metric: AUC
+    max_drop: 0.05

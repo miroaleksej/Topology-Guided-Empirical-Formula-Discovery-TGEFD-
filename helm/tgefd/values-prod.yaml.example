@@ -1,0 +1,109 @@
+replicaCount: 2
+
+image:
+  repository: YOUR_IMAGE
+  tag: YOUR_TAG
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  requests:
+    cpu: "500m"
+    memory: "1Gi"
+  limits:
+    cpu: "2"
+    memory: "2Gi"
+
+probes:
+  liveness:
+    path: /healthz
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    timeoutSeconds: 2
+    failureThreshold: 3
+  readiness:
+    path: /readyz
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 2
+    failureThreshold: 3
+
+config:
+  TGEFD_AUTH_MODE: "jwt"
+  TGEFD_JWKS_URL: "https://auth.example.com/.well-known/jwks.json"
+  TGEFD_JWT_ISSUER: "https://auth.example.com/"
+  TGEFD_JWT_AUDIENCE: "tgefd"
+  TGEFD_JWT_ALLOWED_ALGS: "RS256"
+  TGEFD_RBAC_ENABLED: "true"
+  TGEFD_SCOPE_DISCOVER: "discover"
+  TGEFD_SCOPE_EVALUATE: "evaluate"
+  TGEFD_SCOPE_JOBS: "jobs"
+  TGEFD_SCOPE_METRICS: "metrics"
+  TGEFD_MAX_BODY_BYTES: "1048576"
+  TGEFD_RATE_LIMIT_PER_MINUTE: "120"
+  TGEFD_BURST_LIMIT: "30"
+  TGEFD_HEAVY_RATE_LIMIT_PER_MINUTE: "20"
+  TGEFD_HEAVY_BURST_LIMIT: "5"
+  TGEFD_GLOBAL_CONCURRENCY_LIMIT: "50"
+  TGEFD_HEAVY_CONCURRENCY_LIMIT: "10"
+  TGEFD_CONCURRENCY_TIMEOUT_SEC: "0.5"
+  TGEFD_AUDIT_LOG_PATH: "/var/log/tgefd/audit.jsonl"
+  TGEFD_PROMETHEUS_ENABLED: "true"
+  TGEFD_OTEL_ENABLED: "true"
+  TGEFD_OTEL_ENDPOINT: "http://otel-collector.monitoring:4318/v1/traces"
+  TGEFD_OTEL_SERVICE_NAME: "tgefd"
+
+secret:
+  create: false
+  data: {}
+
+externalSecrets:
+  enabled: true
+  secretStoreRef:
+    name: "vault-backend"
+    kind: "ClusterSecretStore"
+  refreshInterval: "1h"
+  data:
+    - secretKey: TGEFD_API_KEY
+      remoteRef:
+        key: "tgefd/api-key"
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: tgefd.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: tgefd-tls
+      hosts:
+        - tgefd.example.com
+
+monitoring:
+  serviceMonitor:
+    enabled: true
+    interval: 30s
+    scrapeTimeout: 10s
+    labels: {}
+  prometheusRule:
+    enabled: true
+    labels: {}
+  grafanaDashboard:
+    enabled: true
+    labels: {}
+
+podAnnotations: {}
+
+extraEnv: []
+extraEnvFrom: []
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

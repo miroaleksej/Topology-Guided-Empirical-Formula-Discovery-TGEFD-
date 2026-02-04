@@ -1,0 +1,50 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: tgefd-gateway
+  labels:
+    app: tgefd
+spec:
+  gatewayClassName: envoy
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: tgefd.example.com
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: tgefd-tls
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: tgefd-route
+  labels:
+    app: tgefd
+spec:
+  parentRefs:
+    - name: tgefd-gateway
+  hostnames:
+    - tgefd.example.com
+  rules:
+    - filters:
+        - type: RequestHeaderModifier
+          requestHeaderModifier:
+            remove:
+              - x-auth-request-user
+              - x-auth-request-email
+              - x-auth-request-groups
+              - x-forwarded-for
+              - x-forwarded-proto
+            add:
+              - name: x-forwarded-proto
+                value: "https"
+      backendRefs:
+        - name: tgefd
+          port: 80
+---
+# Note: for Envoy ext_authz (JWT/mTLS verification) you will need the Envoy
+# Gateway SecurityPolicy or an external auth service wired to Gateway.
+# This manifest only shows TLS termination + header sanitization.
