@@ -14,6 +14,8 @@ from fastapi.testclient import TestClient
 
 import tgefd.server as server
 
+JWT_HS256_SECRET = "test-secret-32-bytes-long-1234567890"
+
 
 def _valid_request_config() -> dict:
     return {
@@ -280,8 +282,8 @@ def test_rate_limit_uses_identity_header(monkeypatch):
 
 def test_jwt_auth_accepts_valid_token(monkeypatch):
     monkeypatch.setattr(server, "_AUTH_MODE", "jwt")
-    monkeypatch.setattr(server, "_JWT_SECRET", "secret")
-    token = _hs256_token({"sub": "user-1", "exp": time.time() + 60}, "secret")
+    monkeypatch.setattr(server, "_JWT_SECRET", JWT_HS256_SECRET)
+    token = _hs256_token({"sub": "user-1", "exp": time.time() + 60}, JWT_HS256_SECRET)
     client = TestClient(server.app)
 
     response = client.get("/v1/metrics", headers={"authorization": f"Bearer {token}"})
@@ -290,7 +292,7 @@ def test_jwt_auth_accepts_valid_token(monkeypatch):
 
 def test_jwt_auth_rejects_missing_token(monkeypatch):
     monkeypatch.setattr(server, "_AUTH_MODE", "jwt")
-    monkeypatch.setattr(server, "_JWT_SECRET", "secret")
+    monkeypatch.setattr(server, "_JWT_SECRET", JWT_HS256_SECRET)
     client = TestClient(server.app)
 
     response = client.get("/v1/metrics")
@@ -299,9 +301,9 @@ def test_jwt_auth_rejects_missing_token(monkeypatch):
 
 def test_jwt_rejects_disallowed_algorithm(monkeypatch):
     monkeypatch.setattr(server, "_AUTH_MODE", "jwt")
-    monkeypatch.setattr(server, "_JWT_SECRET", "secret")
+    monkeypatch.setattr(server, "_JWT_SECRET", JWT_HS256_SECRET)
     monkeypatch.setattr(server, "_JWT_ALLOWED_ALGS", "RS256")
-    token = _hs256_token({"sub": "user-1", "exp": time.time() + 60}, "secret")
+    token = _hs256_token({"sub": "user-1", "exp": time.time() + 60}, JWT_HS256_SECRET)
     client = TestClient(server.app)
 
     response = client.get("/v1/metrics", headers={"authorization": f"Bearer {token}"})
@@ -367,9 +369,9 @@ def test_jwks_rs256_jwt_allows_metrics(monkeypatch):
 
 def test_rbac_rejects_missing_scope(monkeypatch):
     monkeypatch.setattr(server, "_AUTH_MODE", "jwt")
-    monkeypatch.setattr(server, "_JWT_SECRET", "secret")
+    monkeypatch.setattr(server, "_JWT_SECRET", JWT_HS256_SECRET)
     monkeypatch.setattr(server, "_RBAC_ENABLED", True)
-    token = _hs256_token({"sub": "user-1", "scope": "metrics", "exp": time.time() + 60}, "secret")
+    token = _hs256_token({"sub": "user-1", "scope": "metrics", "exp": time.time() + 60}, JWT_HS256_SECRET)
     client = TestClient(server.app)
 
     response = client.post("/v1/discover", json=_valid_request_config(), headers={"authorization": f"Bearer {token}"})
@@ -378,9 +380,9 @@ def test_rbac_rejects_missing_scope(monkeypatch):
 
 def test_rbac_role_mapping_allows_metrics(monkeypatch):
     monkeypatch.setattr(server, "_AUTH_MODE", "jwt")
-    monkeypatch.setattr(server, "_JWT_SECRET", "secret")
+    monkeypatch.setattr(server, "_JWT_SECRET", JWT_HS256_SECRET)
     monkeypatch.setattr(server, "_RBAC_ENABLED", True)
-    token = _hs256_token({"sub": "user-1", "role": "reader", "exp": time.time() + 60}, "secret")
+    token = _hs256_token({"sub": "user-1", "role": "reader", "exp": time.time() + 60}, JWT_HS256_SECRET)
     client = TestClient(server.app)
 
     ok = client.get("/v1/metrics", headers={"authorization": f"Bearer {token}"})
