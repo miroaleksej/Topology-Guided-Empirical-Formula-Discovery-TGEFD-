@@ -60,7 +60,7 @@ noise:
 evaluation:
   acceptance:
     min_stable_components: 1
-    require_h1: true
+    require_h1: false
     coeff_tol: 1e-6
   stability_score:
     method: "pi_energy"
